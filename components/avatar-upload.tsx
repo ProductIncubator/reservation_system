@@ -1,9 +1,8 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import { Camera, Loader2, Trash2, User } from 'lucide-react'
+import { Camera, Loader2, Trash2 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 
 interface AvatarUploadProps {
@@ -147,12 +146,20 @@ export function AvatarUpload({
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="relative">
-        <Avatar key={avatarUrl ?? 'empty'} className="h-32 w-32">
-          <AvatarImage src={avatarUrl || undefined} alt={providerName} />
-          <AvatarFallback className="bg-blue-100 text-blue-600 text-3xl">
-            {getInitials()}
-          </AvatarFallback>
-        </Avatar>
+        <div className="h-32 w-32 rounded-full overflow-hidden bg-blue-100 flex items-center justify-center ring-4 ring-white shadow">
+          {avatarUrl ? (
+            <img
+              key={avatarUrl}
+              src={avatarUrl}
+              alt={providerName}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <span className="text-blue-600 text-3xl font-semibold select-none">
+              {getInitials()}
+            </span>
+          )}
+        </div>
 
         {/* Camera button overlay */}
         <button
