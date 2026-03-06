@@ -10,7 +10,7 @@ export default function Home() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <Calendar className="h-8 w-8 text-blue-600" />
-              <span className="text-2xl font-bold text-gray-900">BookEasy</span>
+              <span className="text-2xl font-bold text-gray-900">Randevu</span>
             </div>
             <div className="hidden md:flex items-center space-x-8">
               <a href="#features" className="text-gray-600 hover:text-gray-900 transition">Features</a>
@@ -219,7 +219,7 @@ export default function Home() {
                     Share Your Booking Link
                   </h3>
                   <p className="text-gray-600">
-                    Get a personalized booking page (e.g., bookeasy.com/yourname) to share with clients.
+                    Get a personalized booking page (e.g., randevu.az/yourname) to share with clients.
                   </p>
                 </div>
               </div>
@@ -249,7 +249,7 @@ export default function Home() {
             Ready to Grow Your Business?
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of professionals who trust BookEasy to manage their bookings
+            Join thousands of professionals who trust Randevu to manage their bookings
           </p>
           <Link
             href="/auth/signup"
@@ -267,7 +267,7 @@ export default function Home() {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <Calendar className="h-6 w-6 text-blue-500" />
-                <span className="text-xl font-bold text-white">BookEasy</span>
+                <span className="text-xl font-bold text-white">Randevu</span>
               </div>
               <p className="text-sm">
                 The modern booking platform for service providers
@@ -299,7 +299,7 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm">
-            <p>&copy; 2026 BookEasy. All rights reserved.</p>
+            <p>&copy; 2026 Randevu. All rights reserved.</p>
           </div>
         </div>
       </footer>

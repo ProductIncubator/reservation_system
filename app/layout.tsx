@@ -6,7 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "BookEasy - Schedule Your Appointments",
+  title: "Randevu - Schedule Your Appointments",
   description: "Multi-tenant reservation and booking platform for service providers",
   icons: {
     icon: [

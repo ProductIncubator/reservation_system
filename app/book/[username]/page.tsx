@@ -201,7 +201,7 @@ export default function PublicBookingPage() {
         <div className="container mx-auto px-6 py-4">
           <Link href="/">
             <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              BookEasy
+              Randevu
             </h1>
           </Link>
         </div>
