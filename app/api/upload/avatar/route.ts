@@ -24,9 +24,14 @@ export async function POST(req: NextRequest) {
     // Always use the authenticated provider's own ID — ignore any client-supplied providerId
     const providerId = session.user.id
 
-    // Validate file type
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
-    if (!allowedTypes.includes(file.type)) {
+    // Validate MIME type (declared by browser)
+    const allowedTypes: Record<string, string> = {
+      'image/jpeg': 'jpg',
+      'image/jpg': 'jpg',
+      'image/png': 'png',
+      'image/webp': 'webp',
+    }
+    if (!allowedTypes[file.type]) {
       return NextResponse.json(
         { error: 'Invalid file type. Only JPEG, PNG, and WebP are allowed.' },
         { status: 400 }
@@ -34,7 +39,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Validate file size (max 5MB)
-    const maxSize = 5 * 1024 * 1024 // 5MB
+    const maxSize = 5 * 1024 * 1024
     if (file.size > maxSize) {
       return NextResponse.json(
         { error: 'File too large. Maximum size is 5MB.' },
@@ -46,8 +51,8 @@ export async function POST(req: NextRequest) {
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    // Generate unique key
-    const extension = file.type.split('/')[1]
+    // Use a safe, hardcoded extension derived from the validated MIME type
+    const extension = allowedTypes[file.type]
     const key = generateAvatarKey(providerId, extension)
 
     // Upload to R2

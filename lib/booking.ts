@@ -63,7 +63,7 @@ export async function createBookingSafe(data: CreateBookingData) {
           throw new BookingError('PROVIDER_NOT_FOUND', 'Provider not found')
         }
 
-        if (!service || !service) {
+        if (!service) {
           throw new BookingError('SERVICE_NOT_FOUND', 'Service not found')
         }
 

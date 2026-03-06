@@ -2,6 +2,17 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import { z } from 'zod'
+
+const updateSchema = z.object({
+  name: z.string().min(1).max(100).trim().optional(),
+  description: z.string().max(500).trim().nullable().optional(),
+  durationMinutes: z.coerce.number().int().min(1).max(480).optional(),
+  price: z.coerce.number().min(0).max(100000).nullable().optional(),
+  currency: z.enum(['USD', 'EUR', 'GBP', 'AZN', 'TRY', 'RUB', 'UAH']).optional(),
+  bufferTimeMinutes: z.coerce.number().int().min(0).max(120).optional(),
+  isActive: z.boolean().optional(),
+})
 
 export async function PUT(
   req: NextRequest,
@@ -24,18 +35,27 @@ export async function PUT(
     }
 
     const body = await req.json()
-    const { name, description, durationMinutes, price, currency, bufferTimeMinutes, isActive } = body
+    const parsed = updateSchema.safeParse(body)
+
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: parsed.error.errors[0].message },
+        { status: 400 }
+      )
+    }
+
+    const { name, description, durationMinutes, price, currency, bufferTimeMinutes, isActive } = parsed.data
 
     const updated = await prisma.service.update({
       where: { id },
       data: {
-        name: name !== undefined ? name.trim() : existing.name,
-        description: description !== undefined ? (description?.trim() || null) : existing.description,
-        durationMinutes: durationMinutes !== undefined ? parseInt(durationMinutes) : existing.durationMinutes,
-        price: price !== undefined ? (price ? parseFloat(price) : null) : existing.price,
-        currency: currency || existing.currency,
-        bufferTimeMinutes: bufferTimeMinutes !== undefined ? parseInt(bufferTimeMinutes) : existing.bufferTimeMinutes,
-        isActive: isActive !== undefined ? isActive : existing.isActive,
+        ...(name !== undefined && { name }),
+        ...(description !== undefined && { description: description ?? null }),
+        ...(durationMinutes !== undefined && { durationMinutes }),
+        ...(price !== undefined && { price: price ?? null }),
+        ...(currency !== undefined && { currency }),
+        ...(bufferTimeMinutes !== undefined && { bufferTimeMinutes }),
+        ...(isActive !== undefined && { isActive }),
       },
     })
 
@@ -65,7 +85,6 @@ export async function DELETE(
     return NextResponse.json({ error: 'Service not found' }, { status: 404 })
   }
 
-  // If active bookings exist, deactivate instead of deleting
   const activeBookings = await prisma.booking.count({
     where: { serviceId: id, status: { in: ['confirmed', 'pending'] } },
   })
