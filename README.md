@@ -13,6 +13,20 @@ A production-ready booking platform similar to Calendly, built with Next.js 16, 
 - **Real-Time Availability**: Dynamic time slot generation based on existing bookings
 - **Email Notifications**: Booking confirmations and reminders (ready for Resend integration)
 
+## Screenshots
+
+| Landing | Features | How It Works |
+|---------|----------|--------------|
+| ![Landing](screens/landing.png) | ![Features](screens/features.png) | ![How It Works](screens/howitworks.png) |
+
+| Sign In | Dashboard | Working Hours |
+|---------|-----------|---------------|
+| ![Sign In](screens/signin.png) | ![Dashboard](screens/dashboard.png) | ![Working Hours](screens/workinghours.png) |
+
+| Profile | View Booking | Manage Services |
+|---------|--------------|-----------------|
+| ![Profile](screens/profile.png) | ![View Booking](screens/viewbooking.png) | ![Manage Services](screens/manage%20services.png) |
+
 ## Tech Stack
 
 - **Frontend**: Next.js 16 (App Router), React 18, TypeScript, Tailwind CSS
