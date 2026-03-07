@@ -2,13 +2,14 @@ import type { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Randevu',
+    name: 'Randevu – Booking Platform',
     short_name: 'Randevu',
-    description: 'Schedule your appointments online',
-    start_url: '/',
+    description: 'Manage your appointments and bookings from anywhere.',
+    start_url: '/provider/dashboard',
+    id: '/',
     display: 'standalone',
     orientation: 'portrait',
-    background_color: '#ffffff',
+    background_color: '#0a0f1e',
     theme_color: '#2563eb',
     categories: ['business', 'productivity'],
     icons: [
@@ -47,7 +48,12 @@ export default function manifest(): MetadataRoute.Manifest {
       {
         name: 'Dashboard',
         url: '/provider/dashboard',
-        description: 'Go to provider dashboard',
+        description: 'View your booking dashboard',
+      },
+      {
+        name: 'Bookings',
+        url: '/provider/bookings',
+        description: 'Manage your appointments',
       },
     ],
   }

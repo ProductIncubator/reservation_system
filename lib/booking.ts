@@ -27,7 +27,7 @@ export interface CreateBookingData {
 export async function createBookingSafe(data: CreateBookingData) {
   try {
     return await prisma.$transaction(
-      async (tx) => {
+      async (tx: Prisma.TransactionClient) => {
         // Step 1: Lock potentially conflicting bookings using raw SQL
         // This prevents other transactions from modifying overlapping bookings
         const conflicts = await tx.$queryRaw<Array<{ id: string }>>`
@@ -105,7 +105,7 @@ export async function createBookingSafe(data: CreateBookingData) {
         return booking
       },
       {
-        isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+        isolationLevel: 'Serializable' as const,
         maxWait: 3000, // Wait up to 3s for lock
         timeout: 10000, // Transaction timeout 10s
       }
@@ -253,9 +253,13 @@ export async function getProviderBookings(
   const limit = filters?.limit || 50
   const skip = (page - 1) * limit
 
-  const where: Prisma.BookingWhereInput = {
-    providerId,
+  type WhereClause = {
+    providerId: string
+    status?: { in: string[] }
+    startTime?: { gte?: Date; lte?: Date }
   }
+
+  const where: WhereClause = { providerId }
 
   if (filters?.status && filters.status.length > 0) {
     where.status = { in: filters.status }

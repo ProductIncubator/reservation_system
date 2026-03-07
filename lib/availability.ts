@@ -130,14 +130,14 @@ export async function getAvailableSlots(
 
         // Check if slot overlaps with existing bookings
         const isBooked = bookings.some(
-          (booking) =>
+          (booking: { startTime: Date; endTime: Date }) =>
             currentSlotStart < booking.endTime &&
             currentSlotEnd > booking.startTime
         )
 
         // Check if slot overlaps with blocked periods
         const isBlocked = blockedPeriods.some(
-          (blocked) =>
+          (blocked: { startDatetime: Date; endDatetime: Date }) =>
             currentSlotStart < blocked.endDatetime &&
             currentSlotEnd > blocked.startDatetime
         )

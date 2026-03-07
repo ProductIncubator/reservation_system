@@ -6,17 +6,19 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Randevu - Schedule Your Appointments",
-  description: "Multi-tenant reservation and booking platform for service providers",
+  title: "Randevu – Booking Platform",
+  description: "Manage your appointments and bookings from anywhere. The all-in-one booking platform for service providers.",
   manifest: '/manifest.webmanifest',
   appleWebApp: {
     capable: true,
-    statusBarStyle: 'default',
+    statusBarStyle: 'black-translucent',
     title: 'Randevu',
+    startupImage: '/icon-512.png',
   },
   formatDetection: { telephone: false },
   icons: {
-    icon: '/favicon.svg',
+    icon: [{ url: '/favicon.svg' }, { url: '/icon-192.png', sizes: '192x192', type: 'image/png' }],
+    apple: [{ url: '/icon-192.png', sizes: '192x192', type: 'image/png' }],
   },
 };
 

@@ -80,8 +80,8 @@ export async function GET(req: NextRequest) {
       },
     })
 
-    const totalRevenue = monthlyRevenue.reduce((sum, booking) => {
-      const price = booking.service.price ? parseFloat(booking.service.price.toString()) : 0
+    const totalRevenue = monthlyRevenue.reduce((sum: number, booking: { service: { price: unknown } }) => {
+      const price = booking.service.price ? parseFloat(String(booking.service.price)) : 0
       return sum + price
     }, 0)
 

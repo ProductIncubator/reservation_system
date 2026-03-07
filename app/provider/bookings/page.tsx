@@ -118,90 +118,124 @@ export default function BookingsPage() {
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="bg-gray-50 border-b border-gray-100">
-                    {['Customer', 'Service', 'Date & Time', 'Status', 'Amount', 'Actions'].map((h, i) => (
-                      <th
-                        key={h}
-                        className={`text-xs font-semibold text-gray-400 uppercase tracking-wider px-5 py-3 ${
-                          i >= 4 ? 'text-right' : 'text-left'
-                        }`}
-                      >
-                        {h}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-50">
-                  {bookings.map((b) => (
-                    <tr key={b.id} className="hover:bg-gray-50/60 transition-colors">
-                      <td className="px-5 py-3.5">
-                        <p className="text-sm font-medium text-gray-900">{b.customerName}</p>
-                        <p className="text-xs text-gray-400">{b.customerEmail}</p>
-                        {b.customerPhone && (
-                          <p className="text-xs text-gray-400">{b.customerPhone}</p>
-                        )}
-                      </td>
-                      <td className="px-5 py-3.5">
-                        <span className="text-sm text-gray-700">{b.service.name}</span>
-                      </td>
-                      <td className="px-5 py-3.5">
-                        <p className="text-sm text-gray-700">
-                          {format(new Date(b.startTime), 'MMM d, yyyy')}
+            <>
+              {/* Mobile card list */}
+              <div className="md:hidden divide-y divide-gray-100">
+                {bookings.map((b) => (
+                  <div key={b.id} className="p-4">
+                    <div className="flex items-start justify-between gap-3 mb-2">
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-gray-900 truncate">{b.customerName}</p>
+                        <p className="text-xs text-gray-400 truncate">{b.customerEmail}</p>
+                        {b.customerPhone && <p className="text-xs text-gray-400">{b.customerPhone}</p>}
+                      </div>
+                      <StatusBadge status={b.status} />
+                    </div>
+                    <div className="flex items-center justify-between mt-3">
+                      <div>
+                        <p className="text-xs font-medium text-gray-700">{b.service.name}</p>
+                        <p className="text-xs text-gray-400 mt-0.5">
+                          {format(new Date(b.startTime), 'MMM d, yyyy')} · {format(new Date(b.startTime), 'h:mm a')}–{format(new Date(b.endTime), 'h:mm a')}
                         </p>
-                        <p className="text-xs text-gray-400">
-                          {format(new Date(b.startTime), 'h:mm a')} – {format(new Date(b.endTime), 'h:mm a')}
-                        </p>
-                      </td>
-                      <td className="px-5 py-3.5">
-                        <StatusBadge status={b.status} />
-                      </td>
-                      <td className="px-5 py-3.5 text-right">
-                        <span className="text-sm font-medium text-gray-900">
-                          {b.service.price
-                            ? `${b.service.price} ${b.service.currency}`
-                            : <span className="text-gray-300">—</span>}
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-sm font-semibold text-gray-900 mr-2">
+                          {b.service.price ? `${b.service.price} ${b.service.currency}` : <span className="text-gray-300">—</span>}
                         </span>
-                      </td>
-                      <td className="px-5 py-3.5 text-right">
-                        <div className="flex items-center justify-end gap-1">
-                          {(b.status === 'confirmed' || b.status === 'pending') && (
-                            <>
-                              <button
-                                onClick={() => updateStatus(b.id, 'completed')}
-                                disabled={!!actionLoading}
-                                title="Mark as completed"
-                                className="p-1.5 rounded-md hover:bg-green-50 text-gray-400 hover:text-green-600 transition-colors disabled:opacity-50"
-                              >
-                                <Check className="h-3.5 w-3.5" />
-                              </button>
-                              <button
-                                onClick={() => updateStatus(b.id, 'no_show')}
-                                disabled={!!actionLoading}
-                                title="Mark as no-show"
-                                className="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50"
-                              >
-                                <UserMinus className="h-3.5 w-3.5" />
-                              </button>
-                              <button
-                                onClick={() => updateStatus(b.id, 'cancelled')}
-                                disabled={!!actionLoading}
-                                title="Cancel booking"
-                                className="p-1.5 rounded-md hover:bg-red-50 text-gray-400 hover:text-red-600 transition-colors disabled:opacity-50"
-                              >
-                                <X className="h-3.5 w-3.5" />
-                              </button>
-                            </>
-                          )}
-                        </div>
-                      </td>
+                        {(b.status === 'confirmed' || b.status === 'pending') && (
+                          <>
+                            <button onClick={() => updateStatus(b.id, 'completed')} disabled={!!actionLoading} title="Mark as completed"
+                              className="p-1.5 rounded-lg bg-green-50 text-green-600 hover:bg-green-100 transition disabled:opacity-50">
+                              <Check className="h-3.5 w-3.5" />
+                            </button>
+                            <button onClick={() => updateStatus(b.id, 'no_show')} disabled={!!actionLoading} title="No-show"
+                              className="p-1.5 rounded-lg bg-gray-100 text-gray-500 hover:bg-gray-200 transition disabled:opacity-50">
+                              <UserMinus className="h-3.5 w-3.5" />
+                            </button>
+                            <button onClick={() => updateStatus(b.id, 'cancelled')} disabled={!!actionLoading} title="Cancel"
+                              className="p-1.5 rounded-lg bg-red-50 text-red-500 hover:bg-red-100 transition disabled:opacity-50">
+                              <X className="h-3.5 w-3.5" />
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop table */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="bg-gray-50 border-b border-gray-100">
+                      {['Customer', 'Service', 'Date & Time', 'Status', 'Amount', 'Actions'].map((h, i) => (
+                        <th
+                          key={h}
+                          className={`text-xs font-semibold text-gray-400 uppercase tracking-wider px-5 py-3 ${
+                            i >= 4 ? 'text-right' : 'text-left'
+                          }`}
+                        >
+                          {h}
+                        </th>
+                      ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-gray-50">
+                    {bookings.map((b) => (
+                      <tr key={b.id} className="hover:bg-gray-50/60 transition-colors">
+                        <td className="px-5 py-3.5">
+                          <p className="text-sm font-medium text-gray-900">{b.customerName}</p>
+                          <p className="text-xs text-gray-400">{b.customerEmail}</p>
+                          {b.customerPhone && (
+                            <p className="text-xs text-gray-400">{b.customerPhone}</p>
+                          )}
+                        </td>
+                        <td className="px-5 py-3.5">
+                          <span className="text-sm text-gray-700">{b.service.name}</span>
+                        </td>
+                        <td className="px-5 py-3.5">
+                          <p className="text-sm text-gray-700">{format(new Date(b.startTime), 'MMM d, yyyy')}</p>
+                          <p className="text-xs text-gray-400">
+                            {format(new Date(b.startTime), 'h:mm a')} – {format(new Date(b.endTime), 'h:mm a')}
+                          </p>
+                        </td>
+                        <td className="px-5 py-3.5">
+                          <StatusBadge status={b.status} />
+                        </td>
+                        <td className="px-5 py-3.5 text-right">
+                          <span className="text-sm font-medium text-gray-900">
+                            {b.service.price
+                              ? `${b.service.price} ${b.service.currency}`
+                              : <span className="text-gray-300">—</span>}
+                          </span>
+                        </td>
+                        <td className="px-5 py-3.5 text-right">
+                          <div className="flex items-center justify-end gap-1">
+                            {(b.status === 'confirmed' || b.status === 'pending') && (
+                              <>
+                                <button onClick={() => updateStatus(b.id, 'completed')} disabled={!!actionLoading} title="Mark as completed"
+                                  className="p-1.5 rounded-md hover:bg-green-50 text-gray-400 hover:text-green-600 transition-colors disabled:opacity-50">
+                                  <Check className="h-3.5 w-3.5" />
+                                </button>
+                                <button onClick={() => updateStatus(b.id, 'no_show')} disabled={!!actionLoading} title="Mark as no-show"
+                                  className="p-1.5 rounded-md hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50">
+                                  <UserMinus className="h-3.5 w-3.5" />
+                                </button>
+                                <button onClick={() => updateStatus(b.id, 'cancelled')} disabled={!!actionLoading} title="Cancel booking"
+                                  className="p-1.5 rounded-md hover:bg-red-50 text-gray-400 hover:text-red-600 transition-colors disabled:opacity-50">
+                                  <X className="h-3.5 w-3.5" />
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
         </div>
       </main>
